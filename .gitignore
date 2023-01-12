@@ -1,0 +1,6 @@
+# IntelliJ files
+Insite_The_Town_Hall.iml
+/.idea
+
+# Build files
+/out
