@@ -2,6 +2,7 @@ package com.inside_the_town_hall.game.controlls;
 
 import com.inside_the_town_hall.game.scheduler.Clock;
 import com.inside_the_town_hall.game.scheduler.Scheduler;
+import com.inside_the_town_hall.game.test.TestRunner;
 import com.inside_the_town_hall.game.ui.graphical.GUI;
 
 /**
@@ -41,11 +42,11 @@ public class GameController {
     }
 
     /**
-     * Runs all the JUnit tests
+     * Runs all the JUnit suites
      */
     public void test() {
-        // TODO: Implement
-        System.out.println("testing");
+        TestRunner tests = new TestRunner();
+        tests.run();
     }
 
     /**
@@ -57,6 +58,14 @@ public class GameController {
         while (this.running) {
             GUI.getInstance().update();
         }
+    }
+
+    /**
+     * Shuts down the main loop
+     */
+    public void shutdown() {
+        this.running = false;
+        this.clock.shutdown();
     }
 
     // Getter
