@@ -1,4 +1,4 @@
-package log;
+package com.inside_the_town_hall.game.log;
 
 public enum LogMode {
     GREEN("green"){

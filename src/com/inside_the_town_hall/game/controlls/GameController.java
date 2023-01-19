@@ -3,7 +3,9 @@ package com.inside_the_town_hall.game.controlls;
 import com.inside_the_town_hall.game.scheduler.Clock;
 import com.inside_the_town_hall.game.scheduler.Scheduler;
 import com.inside_the_town_hall.game.test.TestRunner;
-import com.inside_the_town_hall.game.ui.graphical.GUI;
+import com.inside_the_town_hall.game.ui.graphical.GUIManager;
+import com.inside_the_town_hall.game.log.LogHandler;
+import com.inside_the_town_hall.game.log.LogMode;
 
 /**
  * Main Loop and different environments are run in the GameController
@@ -16,6 +18,7 @@ public class GameController {
     private static GameController instance;
     private final Clock clock;
     private final Scheduler scheduler;
+    private final LogHandler LOGGER = new LogHandler(GameController.class);
 
     private GameController() {
         this.clock = new Clock();
@@ -36,7 +39,9 @@ public class GameController {
     public void dev() {
         //this.scheduler.createConstantTask(() -> System.out.println("constant1"), 3);
         //this.scheduler.createVolatileTask(() -> System.out.println("volatile1"), 4);
-        this.scheduler.createConstantTask(() -> System.out.println("constant2"), 1000);
+        this.scheduler.createConstantTask(() ->
+                this.LOGGER.log(LogMode.RED, "This is a test!"),
+                10);
         //this.scheduler.createVolatileTask(() -> System.out.println("volatile2"), 10);
         this.clock.start();
     }
@@ -56,7 +61,7 @@ public class GameController {
         // TODO: Implement
         this.clock.start();
         while (this.running) {
-            GUI.getInstance().update();
+            GUIManager.getInstance().update();
         }
     }
 
