@@ -5,6 +5,9 @@ import com.inside_the_town_hall.game.translation.LanguageManager;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.sql.Array;
 
 /**
  * Handles all the file input and output streams.
@@ -18,7 +21,8 @@ public class FileHandler {
 
     public static FileHandler getInstance() {
         if(instance == null) {
-            instance = new FileHandler(""); // TODO: Maybe outsource to config
+            // TODO: Maybe outsource to config
+            instance = new FileHandler("C:\\Users\\David\\OneDrive\\Programme\\Java\\InsideTheTownHall\\src\\com\\inside_the_town_hall\\game\\");
         } return instance;
     }
 
@@ -30,15 +34,20 @@ public class FileHandler {
      * @param path the relative path to the file
      * @return byte array content of the file
      */
-    public static byte[] readFileAsBytes(String path) {
-        return String.valueOf(fileInputStream(path)).getBytes();
+    public byte[] readFileAsBytes(String path) {
+        byte[] bytes = {};
+        try {
+            bytes = Files.readAllBytes(Paths.get(this.CONTENT_ROOT + path));
+        } catch (IOException e) {
+            // TODO: Handle exception
+        } return bytes;
     }
 
     /**
      * @param path the relative path to the file
      * @return string content of the file
      */
-    public static String readFile(String path) {
+    public String readFile(String path) {
         return fileInputStream(path).toString();
     }
 
@@ -48,12 +57,12 @@ public class FileHandler {
      * @param path the relative path to the file
      * @return string Buffer with the file content
      */
-    private static StringBuilder fileInputStream(String path) {
+    private StringBuilder fileInputStream(String path) {
         BufferedInputStream bufferedInputStream;
         StringBuilder fileContent = new StringBuilder();
         try {
             bufferedInputStream = new BufferedInputStream(
-                    new FileInputStream(path)
+                    new FileInputStream(this.CONTENT_ROOT + path)
             );
             while(bufferedInputStream.available() > 0) {
                 fileContent.append((char)bufferedInputStream.read());

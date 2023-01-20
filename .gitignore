@@ -5,3 +5,6 @@ InsideTheTownHall.iml
 # Build files
 /out
 /target
+
+# Log files
+*.log

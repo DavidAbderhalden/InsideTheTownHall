@@ -2,7 +2,7 @@ package com.inside_the_town_hall.game.translation;
 
 import com.inside_the_town_hall.game.log.LogHandler;
 import com.inside_the_town_hall.game.log.LogMode;
-import com.inside_the_town_hall.game.oi.FileHandler;
+import com.inside_the_town_hall.game.io.FileHandler;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class LanguageManager {
      * @param lang the chosen language enum
      */
     public void loadLang(Language lang) {
-        String jsonString = FileHandler.readFile(String.format("assets/translations/%s.json", lang.asString()));
+        String jsonString = FileHandler.getInstance().readFile(String.format("asset\\translations\\%s.json", lang.asString()));
         useLang(jsonString);
         LOGGER.deepLog(LogMode.GREEN, "CONFIG.ADAPT.LANG");
     }

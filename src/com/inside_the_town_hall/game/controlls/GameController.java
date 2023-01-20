@@ -3,9 +3,15 @@ package com.inside_the_town_hall.game.controlls;
 import com.inside_the_town_hall.game.scheduler.Clock;
 import com.inside_the_town_hall.game.scheduler.Scheduler;
 import com.inside_the_town_hall.game.test.TestRunner;
+import com.inside_the_town_hall.game.translation.Language;
+import com.inside_the_town_hall.game.translation.LanguageManager;
 import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 import com.inside_the_town_hall.game.log.LogHandler;
 import com.inside_the_town_hall.game.log.LogMode;
+import com.inside_the_town_hall.game.ui.graphical.GUIScreen;
+import com.inside_the_town_hall.game.ui.graphical.screen.GameScreen;
+
+import java.util.Map;
 
 /**
  * Main Loop and different environments are run in the GameController
@@ -14,7 +20,7 @@ import com.inside_the_town_hall.game.log.LogMode;
  * @author NekroQuest
  */
 public class GameController {
-    private boolean running;
+    private final GUIScreen gameScreen;
     private static GameController instance;
     private final Clock clock;
     private final Scheduler scheduler;
@@ -23,7 +29,7 @@ public class GameController {
     private GameController() {
         this.clock = new Clock();
         this.scheduler = new Scheduler();
-        this.running = true;
+        this.gameScreen = new GameScreen();
     }
 
     public static GameController getInstance() {
@@ -58,18 +64,18 @@ public class GameController {
      * Starts the production game
      */
     public void prod() {
-        // TODO: Implement
         this.clock.start();
-        while (this.running) {
-            GUIManager.getInstance().update();
-        }
+        LanguageManager.getInstance().loadLang(Language.EN_UK);
+        GUIManager.create(1200, 800, LanguageManager.getInstance().use("UI.SCREEN.GAME.TITLE")).init();
+        GUIManager.getInstance().setCurrentScreen(this.gameScreen);
+        GUIManager.getInstance().run();
     }
 
     /**
      * Shuts down the main loop
      */
     public void shutdown() {
-        this.running = false;
+        GUIManager.getInstance().stop();
         this.clock.shutdown();
     }
 
