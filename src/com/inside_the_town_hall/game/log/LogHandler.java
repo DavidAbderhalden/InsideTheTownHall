@@ -1,8 +1,10 @@
 package com.inside_the_town_hall.game.log;
 
+import com.inside_the_town_hall.game.io.FileHandler;
 import com.inside_the_town_hall.game.translation.LanguageManager;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 /**
  * Handles all the logging to the console
@@ -14,8 +16,9 @@ public class LogHandler {
     private static LogHandler instance;
 
     public LogHandler(Class clazz) {
-        BasicConfigurator.configure();
+        PropertyConfigurator.configure(FileHandler.getContentRoot() + "/properties/log4j.properties");
         this.logger = Logger.getLogger(clazz);
+        // this.logger.setAdditivity(false);
     }
 
     /**

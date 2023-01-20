@@ -65,7 +65,7 @@ public class GameController {
      */
     public void prod() {
         this.clock.start();
-        LanguageManager.getInstance().loadLang(Language.EN_UK);
+        // LanguageManager.getInstance().loadLang(Language.EN_UK);
         GUIManager.create(1200, 800, LanguageManager.getInstance().use("UI.SCREEN.GAME.TITLE")).init();
         GUIManager.getInstance().setCurrentScreen(this.gameScreen);
         GUIManager.getInstance().run();

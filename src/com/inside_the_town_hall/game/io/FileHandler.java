@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Array;
 
 /**
  * Handles all the file input and output streams.
@@ -20,10 +19,11 @@ public class FileHandler {
     private static FileHandler instance;
 
     public static FileHandler getInstance() {
-        if(instance == null) {
+        if (instance == null) {
             // TODO: Maybe outsource to config
             instance = new FileHandler("C:\\Users\\David\\OneDrive\\Programme\\Java\\InsideTheTownHall\\src\\com\\inside_the_town_hall\\game\\");
-        } return instance;
+        }
+        return instance;
     }
 
     private FileHandler(String CONTENT_ROOT) {
@@ -40,7 +40,8 @@ public class FileHandler {
             bytes = Files.readAllBytes(Paths.get(this.CONTENT_ROOT + path));
         } catch (IOException e) {
             // TODO: Handle exception
-        } return bytes;
+        }
+        return bytes;
     }
 
     /**
@@ -64,12 +65,17 @@ public class FileHandler {
             bufferedInputStream = new BufferedInputStream(
                     new FileInputStream(this.CONTENT_ROOT + path)
             );
-            while(bufferedInputStream.available() > 0) {
-                fileContent.append((char)bufferedInputStream.read());
+            while (bufferedInputStream.available() > 0) {
+                fileContent.append((char) bufferedInputStream.read());
             }
         } catch (IOException e) {
             LanguageManager.getInstance().use("ERROR.IO.FILE.INPUT");
         }
         return fileContent;
+    }
+
+    // Static Getter
+    public static String getContentRoot() {
+        return getInstance().CONTENT_ROOT;
     }
 }
