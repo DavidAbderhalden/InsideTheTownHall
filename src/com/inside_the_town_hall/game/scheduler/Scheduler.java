@@ -21,7 +21,7 @@ public class Scheduler {
      * @param delay    ticks until task is being run
      */
     public void createVolatileTask(Runnable runnable, int delay) {
-        Task task = new Task(UUID.randomUUID(), runnable, delay, true);
+        Task task = new Task(UUID.randomUUID(), runnable, delay, true, 1);
         addTask(task);
     }
 
@@ -32,7 +32,12 @@ public class Scheduler {
      * @param delay    ticks until task is being run
      */
     public void createConstantTask(Runnable runnable, int delay) {
-        Task task = new Task(UUID.randomUUID(), runnable, delay, false);
+        Task task = new Task(UUID.randomUUID(), runnable, delay, false, 0);
+        addTask(task);
+    }
+
+    public void createTimedTask(Runnable runnable, int delay, int lifetime) {
+        Task task = new Task(UUID.randomUUID(), runnable, delay, true, lifetime);
         addTask(task);
     }
 

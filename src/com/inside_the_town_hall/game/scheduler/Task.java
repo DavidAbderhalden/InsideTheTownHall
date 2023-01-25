@@ -13,13 +13,15 @@ public class Task {
     private final int delay; // in ticks
     private int remainingDelay;
     private final boolean removable; // task is constant or not
+    private int lifetime;
 
-    public Task(UUID id, Runnable runnable, int delay, boolean removable) {
+    public Task(UUID id, Runnable runnable, int delay, boolean removable, int lifetime) {
         this.id = id;
         this.runnable = runnable;
         this.delay = delay;
         this.remainingDelay = this.delay;
         this.removable = removable;
+        this.lifetime = lifetime;
     }
 
     /**
@@ -32,6 +34,7 @@ public class Task {
         if (this.remainingDelay == 0) {
             this.remainingDelay = this.delay;
             this.runnable.run();
+            this.lifetime--;
             return true;
         }
         return false;
@@ -39,7 +42,7 @@ public class Task {
 
     // Getter
     public boolean isRemovable() {
-        return removable;
+        return removable && this.lifetime == 0;
     }
 
     // Getter

@@ -9,4 +9,8 @@ public abstract class Item {
     public Item(ILevel levelHandler) {
         this.levelHandler = levelHandler;
     }
+
+    public int getSpeed() {
+        return this.levelHandler.getSpeed();
+    }
 }
