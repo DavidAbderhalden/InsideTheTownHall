@@ -1,8 +1,8 @@
 {
   "CONFIG.SET.LANG": "The language english UK has been loaded",
   "CONFIG.ADAPT.LANG": "The language was changed to english UK",
-
   "ERROR.IO.FILE.INPUT": "An error occurred while trying to read a file",
-
-  "UI.SCREEN.GAME.TITLE": "Inside The Town Hall"
+  "ERROR.UI.IMAGE.FAVICON": "The program icon couldn't be loaded",
+  "UI.SCREEN.GAME.TITLE": "Inside The Town Hall",
+  "SCHEDULER.TASK.ACTION.CANCEL": "The task ${TASK_ID} was canceled"
 }
