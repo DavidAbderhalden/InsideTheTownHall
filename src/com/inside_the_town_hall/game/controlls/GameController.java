@@ -56,7 +56,9 @@ public class GameController {
         //this.scheduler.createVolatileTask(() -> System.out.println("volatile2"), 10);
         this.clock.start();
         Board.getInstance().getLayout().add(new BoardItem(new BoardPosition(1, 2), new Chair(), new DefaultPathfinding()));
-        Board.getInstance().getLayout().getItem(1, 2).pathfindTo(new BoardPosition(2, 5));
+        BoardItem item = Board.getInstance().getLayout().getItem(1, 2);
+        item.pathfindTo(new BoardPosition(2, 5));
+        item.abort();
     }
 
     /**

@@ -3,63 +3,109 @@ package com.inside_the_town_hall.game.board.lib.board;
 import com.inside_the_town_hall.game.board.items.Item;
 import com.inside_the_town_hall.game.board.lib.behavior.IPathfindingBehavior;
 import com.inside_the_town_hall.game.controlls.GameController;
+import com.inside_the_town_hall.game.log.LogHandler;
+import com.inside_the_town_hall.game.log.LogMode;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Item wrapper class for usage of item in board and scheduler tasks
+ *
+ * @author NekroQuest
+ */
 public class BoardItem {
     private final UUID id;
     private final BoardPosition boardPosition;
     private final Item item;
     private final IPathfindingBehavior pathfindingBehavior;
+    private LinkedList<UUID> activeActions;
+    private final LinkedList<UUID> abortedActions;
+    private final LogHandler LOGGER = new LogHandler(this.getClass());
 
     public BoardItem(BoardPosition initPos, Item item, IPathfindingBehavior pathfindingBehavior) {
         this.id = UUID.randomUUID();
         this.boardPosition = initPos;
         this.item = item;
         this.pathfindingBehavior = pathfindingBehavior;
+        this.activeActions = new LinkedList<>();
+        this.abortedActions = new LinkedList<>();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        BoardItem boardItem = (BoardItem) obj;
-        // TODO: Override BoardPosition / Item
-        return this.id == boardItem.getId();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(boardPosition, item);
-    }
-
+    /**
+     * Moves item to different position on board
+     * Method is overloaded
+     *
+     * @param x the x coordinate on the board
+     * @param y the y coordinate on the board
+     * @return if piece could move to the position (position is valid)
+     */
     public boolean moveTo(int x, int y) {
         return this.boardPosition.setX(x) && this.boardPosition.setY(y);
     }
 
+    /**
+     * Moves item to different position on board
+     * Method is overloaded
+     *
+     * @param newPos the destination as object
+     * @return if piece could move to the position (position is valid)
+     */
     public boolean moveTo(BoardPosition newPos) {
         return moveTo(newPos.getX(), newPos.getY());
     }
 
+    /**
+     * Creates a scheduler task to move item to the destination position
+     *
+     * @param targetPos the position the item should pathfind to
+     */
     public void pathfindTo(BoardPosition targetPos) {
+        UUID actionId = UUID.randomUUID();
         HashMap<BoardPosition, BoardPosition> path = this.pathfindingBehavior.pathfind(this.boardPosition, targetPos);
         GameController.getInstance().getScheduler().createTimedTask(
-                () -> moveToTargetTask(path, this.id),
+                () -> moveToTask(path, actionId),
                 item.getSpeed(),
                 path.size()
         );
+        this.activeActions.add(actionId);
     }
 
-    // Scheduler task Runnable
-    private void moveToTargetTask(HashMap<BoardPosition, BoardPosition> path, UUID targetId) {
-        BoardItem targetItem = Board.getInstance().getItem(targetId);
-        BoardPosition nextPosition = path.get(targetItem.getPosition());
-        targetItem.moveTo(nextPosition);
+    /**
+     * SCHEDULER ACTION
+     *
+     *
+     * @param path hashmap of the pathfinding ({pos1, pos2}, {pos2, pos3} ...)
+     * @param actionId id of the task action (used for canceling etc.)
+     */
+    private void moveToTask(HashMap<BoardPosition, BoardPosition> path, UUID actionId) {
+        if(cancelAction(actionId)) {
+            this.LOGGER.deepLog(LogMode.YELLOW, "SCHEDULER.TASK.ACTION.CANCEL", new HashMap<>(){{
+                put("TASK_ID", actionId.toString());
+            }});
+            return;
+        }
+        BoardPosition nextPosition = path.get(this.boardPosition);
+        moveTo(nextPosition);
     }
 
+    /**
+     * SCHEDULER ACTION
+     *
+     * @param actionId id of the task action (used for canceling etc.)
+     * @return has the action been canceled
+     */
+    private boolean cancelAction(UUID actionId) {
+        return this.abortedActions.contains(actionId);
+    }
+
+    /**
+     * Get all the items on the board surrounding this one
+     *
+     * @return linked list of all items surrounding
+     */
     public LinkedList<BoardItem> getNeighbours() {
         LinkedList<BoardItem> neighbours = new LinkedList<>();
         int targetX = this.boardPosition.getX();
@@ -72,16 +118,37 @@ public class BoardItem {
         return neighbours;
     }
 
+    /**
+     * Tells if an item is diagonal beside this one
+     *
+     * @param item the item to check
+     * @return if item is diagonal (neighbours - adjacent)
+     */
     private boolean isDiagonal(BoardItem item) {
         return Math.abs(this.boardPosition.getX() - item.boardPosition.getX())
                 + Math.abs(this.boardPosition.getY() - item.boardPosition.getY()) == 2;
     }
 
+    /**
+     * Tells if an item is adjacent beside this one
+     *
+     * @param item the item to check
+     * @return if item is adjacent (neighbours - diagonal)
+     */
     private boolean isAdjacent(BoardItem item) {
         return Math.abs(this.boardPosition.getX() - item.boardPosition.getX())
                 + Math.abs(this.boardPosition.getY() - item.boardPosition.getY()) == 1;
     }
 
+    /**
+     * Cancels all ongoing actions
+     */
+    public void abort() {
+        this.abortedActions.addAll(this.activeActions);
+        this.activeActions = new LinkedList<>();
+    }
+
+    // Getter
     public BoardPosition getPosition() {
         return this.boardPosition;
     }
@@ -97,4 +164,19 @@ public class BoardItem {
     public IPathfindingBehavior getPathfindingBehavior() {
         return this.pathfindingBehavior;
     }
+
+    // Overriding
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        BoardItem boardItem = (BoardItem) obj;
+        return this.id == boardItem.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(boardPosition, item);
+    }
+
 }

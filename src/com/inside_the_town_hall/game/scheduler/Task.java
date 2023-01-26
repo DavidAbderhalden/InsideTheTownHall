@@ -42,7 +42,7 @@ public class Task {
 
     // Getter
     public boolean isRemovable() {
-        return removable && this.lifetime == 0;
+        return this.removable && this.lifetime == 0;
     }
 
     // Getter

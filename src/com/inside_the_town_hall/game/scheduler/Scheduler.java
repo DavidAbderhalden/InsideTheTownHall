@@ -36,6 +36,13 @@ public class Scheduler {
         addTask(task);
     }
 
+    /**
+     * Creates task that will run for a specific lifetime
+     *
+     * @param runnable task method
+     * @param delay    ticks until task is being run
+     * @param lifetime how many times the task is run
+     */
     public void createTimedTask(Runnable runnable, int delay, int lifetime) {
         Task task = new Task(UUID.randomUUID(), runnable, delay, true, lifetime);
         addTask(task);
