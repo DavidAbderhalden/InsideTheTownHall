@@ -1,5 +1,6 @@
 package com.inside_the_town_hall.game.ui.graphical.shader;
 
+import com.inside_the_town_hall.game.controlls.GameController;
 import com.inside_the_town_hall.game.io.FileHandler;
 import com.inside_the_town_hall.game.utils.BufferCreator;
 import org.lwjgl.BufferUtils;
@@ -58,7 +59,8 @@ public class Texture {
         IntBuffer comp = BufferUtils.createIntBuffer(1);
 
         ByteBuffer data = null;
-        data = stbi_load_from_memory(BufferCreator.createByteBuffer(FileHandler.getInstance().readFileAsBytes("asset/textures/" + name)), width, height, comp, 4);
+        data = stbi_load_from_memory(BufferCreator.createByteBuffer(FileHandler.getInstance().readFileAsBytes("asset\\textures\\" + name)), width, height, comp, 4);
+        // TODO: Different Exception
         if (data == null) throw new RuntimeException("texture.load.failed");
 
         this.id = glGenTextures();

@@ -1,11 +1,10 @@
 package com.inside_the_town_hall.game.ui.graphical;
 
 import com.inside_the_town_hall.game.controlls.GameController;
-import com.inside_the_town_hall.game.log.LogHandler;
-
 import com.inside_the_town_hall.game.io.FileHandler;
+import com.inside_the_town_hall.game.log.LogHandler;
+import com.inside_the_town_hall.game.log.LogMode;
 import com.inside_the_town_hall.game.translation.LanguageManager;
-import com.inside_the_town_hall.game.utils.Time;
 import com.inside_the_town_hall.game.ui.graphical.font.EnhancedFont;
 import com.inside_the_town_hall.game.ui.graphical.font.IFont;
 import com.inside_the_town_hall.game.ui.graphical.peripheral.Keyboard;
@@ -15,6 +14,7 @@ import com.inside_the_town_hall.game.ui.graphical.shader.Shader;
 import com.inside_the_town_hall.game.ui.graphical.shader.Texture;
 import com.inside_the_town_hall.game.ui.graphical.shader.TextureModel;
 import com.inside_the_town_hall.game.utils.BufferCreator;
+import com.inside_the_town_hall.game.utils.Time;
 import com.inside_the_town_hall.game.utils.VertexUtils;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -45,8 +45,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  * Manages active window and shader settings etc.
  * Is a Singleton
  *
- * @version 0.1
  * @author NekroQuest
+ * @version 0.1
  */
 public class GUIManager implements Runnable {
     private static GUIManager instance;
@@ -96,7 +96,7 @@ public class GUIManager implements Runnable {
 
     public static GUIManager getInstance() {
         // TODO: Exception handler / Custom Exception
-        if(instance == null) throw new RuntimeException("gui.init.null");
+        if (instance == null) throw new RuntimeException("gui.init.null");
         return instance;
     }
 
@@ -106,7 +106,8 @@ public class GUIManager implements Runnable {
         this.width = width;
         this.height = height;
         this.title = title;
-        this.nullScreen = new GUIScreen() {};
+        this.nullScreen = new GUIScreen() {
+        };
         this.currentScreen = nullScreen;
         this.lastScreen = this.currentScreen;
 
@@ -153,14 +154,15 @@ public class GUIManager implements Runnable {
             this.running = true;
             centerWindow();
             glfwShowWindow(window);
+            // toggleFullscreen();
 
-            while(this.isRunning()) {
+            while (this.isRunning()) {
                 this.getTime().onFrame();
 //                LOGGER.info("Frame-Time: " + this.getTime().getDeltaTime());
                 glfwPollEvents();
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                while(!this.tasks.isEmpty()) {
+                while (!this.tasks.isEmpty()) {
                     this.tasks.poll().run();
                 }
 
@@ -200,29 +202,34 @@ public class GUIManager implements Runnable {
 
         this.defaultFont = EnhancedFont.loadFromResource("default");
 
-        this.rect = new ColorModel(new float[] {0.0f}, new byte[] {(byte)0});
-        this.background = new TextureModel(Texture.getTexture("blur_background.png"), VertexUtils.getVertices(0, 0, 0, 0), VertexUtils.getVertices(0, 0, 1, 1));
+        this.rect = new ColorModel(new float[]{0.0f}, new byte[]{(byte) 0});
+        this.background = new TextureModel(Texture.getTexture("background_blurred.png"), VertexUtils.getVertices(0, 0, 0, 0), VertexUtils.getVertices(0, 0, 1, 1));
     }
 
     private void setWindowIcon() {
+        IntBuffer width = BufferUtils.createIntBuffer(1);
+        IntBuffer height = BufferUtils.createIntBuffer(1);
+        IntBuffer comp = BufferUtils.createIntBuffer(1);
+        GLFWImage icon = GLFWImage.malloc();
+        GLFWImage.Buffer imageBuf = GLFWImage.malloc(1);
         try {
-            IntBuffer width = BufferUtils.createIntBuffer(1);
-            IntBuffer height = BufferUtils.createIntBuffer(1);
-            IntBuffer comp = BufferUtils.createIntBuffer(1);
-            ByteBuffer image = STBImage.stbi_load_from_memory(BufferCreator.createByteBuffer(FileHandler.getInstance().readFileAsBytes("asset/textures/icon_64.png")), width, height, comp, 4);
-
-            GLFWImage icon = GLFWImage.malloc();
-            GLFWImage.Buffer imageBuf = GLFWImage.malloc(1);
+            // TODO: Make icon path constant (configurable)
+            ByteBuffer image = STBImage.stbi_load_from_memory(BufferCreator.createByteBuffer(
+                            FileHandler.getInstance().readFileAsBytes(
+                                    "asset\\textures\\%s".formatted(GameController.properties.FAVICON_NAME()))),
+                    width, height, comp, 4);
+            assert image != null;
             icon.set(width.get(), height.get(), image);
             imageBuf.put(0, icon);
             glfwSetWindowIcon(window, imageBuf);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.deepLog(LogMode.RED, "ERROR.UI.IMAGE.FAVICON");
         }
     }
 
     /**
      * Executes a runnable in the gui Thread
+     *
      * @param runnable
      */
     public void addTask(Runnable runnable) {
@@ -266,11 +273,11 @@ public class GUIManager implements Runnable {
     }
 
     public void drawRect(int x, int y, int width, int height, Color color) {
-        this.rect.setVertices(new float[] {
-                (float)x, (float)y,
-                (float)x+width, (float)y,
-                (float)x+width, (float)y+height,
-                (float)x, (float)y+height
+        this.rect.setVertices(new float[]{
+                (float) x, (float) y,
+                (float) x + width, (float) y,
+                (float) x + width, (float) y + height,
+                (float) x, (float) y + height
         });
         this.rect.setColor(color);
         this.rect.render();
@@ -279,14 +286,14 @@ public class GUIManager implements Runnable {
     public void drawBackground() {
         int[] center = this.getCenter();
         final float imageRatio = (float) background.getTexture().getWidth() / background.getTexture().getHeight();
-        final float newWidth = this.height * imageRatio;
+        final float newWidth = this.width > this.height * imageRatio ? this.width : this.height * imageRatio;
         final float newHeight = this.height;
         final float newX = center[0] - (newWidth / 2);
         final float newY = 0;
 
         this.background.setVertices(VertexUtils.getVertices(newX, newY, newWidth, newHeight));
         this.background.render();
-        this.drawRect(0, 0, this.width, this.height, new Color(0, 0, 0, 170));
+        this.drawRect(0, 0, this.width, this.height, new Color(0, 0, 0, 136));
     }
 
     public void setCurrentScreen(GUIScreen screen) {
@@ -301,6 +308,7 @@ public class GUIManager implements Runnable {
     private boolean fullscreen;
     private int previousWidth;
     private int previousHeigh;
+
     public void toggleFullscreen() {
         if (this.isFullscreen()) {
             glfwSetWindowSize(window, previousWidth, previousHeigh);
@@ -404,6 +412,8 @@ public class GUIManager implements Runnable {
 
     public void updateTitle() {
         glfwSetWindowTitle(this.window, LanguageManager.getInstance()
-                .use("window.title", new HashMap<>(){{put("version", "0.1");}}));
+                .use("window.title", new HashMap<>() {{
+                    put("version", "0.1");
+                }}));
     }
 }
