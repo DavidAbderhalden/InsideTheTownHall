@@ -1,5 +1,6 @@
 package com.inside_the_town_hall.game.io;
 
+import com.inside_the_town_hall.game.controlls.GameController;
 import com.inside_the_town_hall.game.translation.LanguageManager;
 
 import java.io.BufferedInputStream;
@@ -15,19 +16,13 @@ import java.nio.file.Paths;
  * @author NekroQuest
  */
 public class FileHandler {
-    private final String CONTENT_ROOT; // The root directory
     private static FileHandler instance;
 
     public static FileHandler getInstance() {
         if (instance == null) {
-            // TODO: Maybe outsource to config
-            instance = new FileHandler("C:\\Users\\David\\OneDrive\\Programme\\Java\\InsideTheTownHall\\src\\com\\inside_the_town_hall\\game\\");
+            instance = new FileHandler();
         }
         return instance;
-    }
-
-    private FileHandler(String CONTENT_ROOT) {
-        this.CONTENT_ROOT = CONTENT_ROOT;
     }
 
     /**
@@ -37,7 +32,7 @@ public class FileHandler {
     public byte[] readFileAsBytes(String path) {
         byte[] bytes = {};
         try {
-            bytes = Files.readAllBytes(Paths.get(this.CONTENT_ROOT + path));
+            bytes = Files.readAllBytes(Paths.get(GameController.properties.CONTENT_ROOT() + path));
         } catch (IOException e) {
             // TODO: Handle exception
         }
@@ -63,7 +58,7 @@ public class FileHandler {
         StringBuilder fileContent = new StringBuilder();
         try {
             bufferedInputStream = new BufferedInputStream(
-                    new FileInputStream(this.CONTENT_ROOT + path)
+                    new FileInputStream(GameController.properties.CONTENT_ROOT() + path)
             );
             while (bufferedInputStream.available() > 0) {
                 fileContent.append((char) bufferedInputStream.read());
@@ -72,10 +67,5 @@ public class FileHandler {
             LanguageManager.getInstance().use("ERROR.IO.FILE.INPUT");
         }
         return fileContent;
-    }
-
-    // Static Getter
-    public static String getContentRoot() {
-        return getInstance().CONTENT_ROOT;
     }
 }
