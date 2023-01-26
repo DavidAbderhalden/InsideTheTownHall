@@ -1,5 +1,6 @@
 package com.inside_the_town_hall.game.translation;
 
+import com.inside_the_town_hall.game.controlls.GameController;
 import com.inside_the_town_hall.game.log.LogHandler;
 import com.inside_the_town_hall.game.log.LogMode;
 import com.inside_the_town_hall.game.io.FileHandler;
@@ -74,7 +75,7 @@ public class LanguageManager {
      * @return the formatted message assigned to key
      */
     public String use(String key, Map<String, String> map) {
-        if (indices.isEmpty()) loadLang(Language.EN_UK);
+        if (indices.isEmpty()) loadLang(GameController.properties.DEFAULT_LANG());
         String message = indices.get(key);
         for(Map.Entry<String, String> entry : map.entrySet()){
             String check = String.format("\\$\\{%s\\}", entry.getKey());

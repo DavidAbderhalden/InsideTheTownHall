@@ -1,6 +1,17 @@
 package com.inside_the_town_hall.game.log;
 
+/**
+ * Color of the log message
+ *
+ * @author NekroQuest
+ */
 public enum LogMode {
+    YELLOW("yellow"){
+        @Override
+        public String parse(String message) {
+            return "\u001b[33m"+message+"\u001b[0m";
+        }
+    },
     GREEN("green"){
         @Override
         public String parse(String message) {
@@ -27,6 +38,12 @@ public enum LogMode {
         this.logModeString = logModeString;
     }
 
+    /**
+     * Create a LogMode object from a string
+     *
+     * @param logModeString color as string
+     * @return the correct LogMode object
+     */
     public static LogMode fromString(String logModeString) {
           for(LogMode mode : LogMode.values()) {
               if (mode.getAsString().equals(logModeString)) {
@@ -35,11 +52,18 @@ public enum LogMode {
           } return null;
     }
 
-    public String getAsString() {
-        return logModeString;
-    }
-
+    /**
+     * Is being overridden by specific modes
+     *
+     * @param message the log message
+     * @return the ascii colored message
+     */
     public String parse(String message) {
         return message;
+    }
+
+    // Getter
+    public String getAsString() {
+        return logModeString;
     }
 }

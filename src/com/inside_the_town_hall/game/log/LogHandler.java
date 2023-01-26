@@ -1,10 +1,11 @@
 package com.inside_the_town_hall.game.log;
 
-import com.inside_the_town_hall.game.io.FileHandler;
+import com.inside_the_town_hall.game.controlls.GameController;
 import com.inside_the_town_hall.game.translation.LanguageManager;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+
+import java.util.HashMap;
 
 /**
  * Handles all the logging to the console
@@ -16,25 +17,37 @@ public class LogHandler {
     private static LogHandler instance;
 
     public LogHandler(Class clazz) {
-        PropertyConfigurator.configure(FileHandler.getContentRoot() + "/properties/log4j.properties");
+        PropertyConfigurator.configure(GameController.properties.CONTENT_ROOT() + "/properties/log4j.properties");
         this.logger = Logger.getLogger(clazz);
-        // this.logger.setAdditivity(false);
     }
 
     /**
      * Translates message and uses log method
+     * The Method is overloaded
      *
      * @param mode Changeable mode for color of log message
-     * @param key log message
+     * @param key  log message
      */
     public void deepLog(LogMode mode, String key) {
         log(mode, LanguageManager.getInstance().use(key));
     }
 
     /**
-     * Handles logs as information
+     * Translates message and uses log method plus provides a string formatting map
+     * The Method is overloaded
      *
      * @param mode Changeable mode for color of log message
+     * @param key  log message
+     * @param transMap the string formatting map
+     */
+    public void deepLog(LogMode mode, String key, HashMap<String, String> transMap) {
+        log(mode, LanguageManager.getInstance().use(key, transMap));
+    }
+
+    /**
+     * Handles logs as information
+     *
+     * @param mode    Changeable mode for color of log message
      * @param message log message
      */
     public void log(LogMode mode, String message) {
