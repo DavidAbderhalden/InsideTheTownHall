@@ -1,7 +1,11 @@
-package com.inside_the_town_hall.game.board.lib.board;
+package com.inside_the_town_hall.game.board.lib.boardItem;
 
-import com.inside_the_town_hall.game.board.items.Item;
+import com.inside_the_town_hall.game.board.entities.Entity;
+import com.inside_the_town_hall.game.board.lib.behavior.BoardItemType;
+import com.inside_the_town_hall.game.board.lib.behavior.IBoardItemAction;
 import com.inside_the_town_hall.game.board.lib.behavior.IPathfindingBehavior;
+import com.inside_the_town_hall.game.board.lib.board.Board;
+import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
 import com.inside_the_town_hall.game.controlls.GameController;
 import com.inside_the_town_hall.game.log.LogHandler;
 import com.inside_the_town_hall.game.log.LogMode;
@@ -19,20 +23,17 @@ import java.util.UUID;
 public class BoardItem {
     private final UUID id;
     private final BoardPosition boardPosition;
-    private final Item item;
-    private final IPathfindingBehavior pathfindingBehavior;
-    private LinkedList<UUID> activeActions;
-    private final LinkedList<UUID> abortedActions;
-    private final LogHandler LOGGER = new LogHandler(this.getClass());
+    private final IBoardItemAction boardItemAction;
+    private final Entity item;
 
-    public BoardItem(BoardPosition initPos, Item item, IPathfindingBehavior pathfindingBehavior) {
+    public BoardItem(BoardPosition initPos, Entity item, BoardItemType boardItemType) {
         this.id = UUID.randomUUID();
         this.boardPosition = initPos;
         this.item = item;
-        this.pathfindingBehavior = pathfindingBehavior;
-        this.activeActions = new LinkedList<>();
-        this.abortedActions = new LinkedList<>();
+        this.boardItemAction = boardItemType.getBoardItemAction(this.id, this.item, this.boardPosition);
     }
+
+    // TODO: Not every BoardItem can move etc.
 
     /**
      * Moves item to different position on board
@@ -62,16 +63,16 @@ public class BoardItem {
      *
      * @param targetPos the position the item should pathfind to
      */
-    public void pathfindTo(BoardPosition targetPos) {
-        UUID actionId = UUID.randomUUID();
-        HashMap<BoardPosition, BoardPosition> path = this.pathfindingBehavior.pathfind(this.boardPosition, targetPos);
-        GameController.getInstance().getScheduler().createTimedTask(
-                () -> moveToTask(path, actionId),
-                item.getSpeed(),
-                path.size()
-        );
-        this.activeActions.add(actionId);
-    }
+//    public void pathfindTo(BoardPosition targetPos) {
+//        UUID actionId = UUID.randomUUID();
+//        HashMap<BoardPosition, BoardPosition> path = this.pathfindingBehavior.pathfind(this.boardPosition, targetPos);
+//        GameController.getInstance().getScheduler().createTimedTask(
+//                () -> moveToTask(path, actionId),
+//                item.getSpeed(),
+//                path.size()
+//        );
+//        this.activeActions.add(actionId);
+//    }
 
     /**
      * SCHEDULER ACTION
@@ -80,16 +81,16 @@ public class BoardItem {
      * @param path hashmap of the pathfinding ({pos1, pos2}, {pos2, pos3} ...)
      * @param actionId id of the task action (used for canceling etc.)
      */
-    private void moveToTask(HashMap<BoardPosition, BoardPosition> path, UUID actionId) {
-        if(cancelAction(actionId)) {
-            this.LOGGER.deepLog(LogMode.YELLOW, "SCHEDULER.TASK.ACTION.CANCEL", new HashMap<>(){{
-                put("TASK_ID", actionId.toString());
-            }});
-            return;
-        }
-        BoardPosition nextPosition = path.get(this.boardPosition);
-        moveTo(nextPosition);
-    }
+//    private void moveToTask(HashMap<BoardPosition, BoardPosition> path, UUID actionId) {
+//        if(cancelAction(actionId)) {
+//            this.LOGGER.deepLog(LogMode.YELLOW, "SCHEDULER.TASK.ACTION.CANCEL", new HashMap<>(){{
+//                put("TASK_ID", actionId.toString());
+//            }});
+//            return;
+//        }
+//        BoardPosition nextPosition = path.get(this.boardPosition);
+//        moveTo(nextPosition);
+//    }
 
     /**
      * SCHEDULER ACTION
@@ -97,9 +98,9 @@ public class BoardItem {
      * @param actionId id of the task action (used for canceling etc.)
      * @return has the action been canceled
      */
-    private boolean cancelAction(UUID actionId) {
-        return this.abortedActions.contains(actionId);
-    }
+//    private boolean cancelAction(UUID actionId) {
+//        return this.abortedActions.contains(actionId);
+//    }
 
     /**
      * Get all the items on the board surrounding this one
@@ -143,17 +144,17 @@ public class BoardItem {
     /**
      * Cancels all ongoing actions
      */
-    public void abort() {
-        this.abortedActions.addAll(this.activeActions);
-        this.activeActions = new LinkedList<>();
-    }
+//    public void abort() {
+//        this.abortedActions.addAll(this.activeActions);
+//        this.activeActions = new LinkedList<>();
+//    }
 
     // Getter
     public BoardPosition getPosition() {
         return this.boardPosition;
     }
 
-    public Item getItem() {
+    public Entity getItem() {
         return item;
     }
 
@@ -161,8 +162,12 @@ public class BoardItem {
         return id;
     }
 
-    public IPathfindingBehavior getPathfindingBehavior() {
-        return this.pathfindingBehavior;
+//    public IPathfindingBehavior getPathfindingBehavior() {
+//        return this.pathfindingBehavior;
+//    }
+
+    public IBoardItemAction action() {
+        return this.boardItemAction;
     }
 
     // Overriding

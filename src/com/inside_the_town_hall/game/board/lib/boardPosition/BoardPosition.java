@@ -1,4 +1,6 @@
-package com.inside_the_town_hall.game.board.lib.board;
+package com.inside_the_town_hall.game.board.lib.boardPosition;
+
+import com.inside_the_town_hall.game.board.lib.board.Board;
 
 import java.util.Objects;
 

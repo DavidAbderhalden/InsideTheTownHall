@@ -1,5 +1,6 @@
 package com.inside_the_town_hall.game.board.lib.board;
 
+import com.inside_the_town_hall.game.board.lib.boardItem.BoardItem;
 import com.inside_the_town_hall.game.board.lib.layout.Layout;
 
 import java.util.UUID;
@@ -11,6 +12,7 @@ public class Board {
     public static Board getInstance() {
         if (instance == null) {
             instance = new Board(32, 32);
+            instance.boardLayout.init();
         }
         return instance;
     }
