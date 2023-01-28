@@ -1,5 +1,6 @@
-package com.inside_the_town_hall.game.ui.graphical;
+package com.inside_the_town_hall.game.ui.graphical.object.lib;
 
+import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 import com.inside_the_town_hall.game.ui.graphical.blueprint.IGUIObject;
 
 public abstract class GUIObject implements IGUIObject {
@@ -42,14 +43,14 @@ public abstract class GUIObject implements IGUIObject {
     @Override
     public void onMouseUp(int button, int mods) {}
 
-    @Override
-    public void onMouse(int button, int action, int mods) {}
-
     public boolean isHovered() {
         double[] cursorPos = GUIManager.getInstance().getMouse().getCursor().getPos();
-        return (cursorPos[0] > this.x && cursorPos[0] < this.x + this.width &&
+        return  (cursorPos[0] > this.x && cursorPos[0] < this.x + this.width &&
                 cursorPos[1] > this.y && cursorPos[1] < this.y + this.height);
     }
+
+    @Override
+    public void onMouse(int button, int action, int mods) {}
 
     public int getX() {
         return x;

@@ -1,10 +1,7 @@
 package com.inside_the_town_hall.game.controlls;
 
-import com.inside_the_town_hall.game.board.entities.lib.chair.Chair;
 import com.inside_the_town_hall.game.board.entities.lib.wizard.Wizard;
 import com.inside_the_town_hall.game.board.lib.behavior.BoardItemType;
-import com.inside_the_town_hall.game.board.lib.behavior.DefaultPathfinding;
-import com.inside_the_town_hall.game.board.lib.behavior.MovableBoardItemAction;
 import com.inside_the_town_hall.game.board.lib.board.Board;
 import com.inside_the_town_hall.game.board.lib.boardItem.BoardItem;
 import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
@@ -17,7 +14,7 @@ import com.inside_the_town_hall.game.test.TestRunner;
 import com.inside_the_town_hall.game.translation.LanguageManager;
 import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 import com.inside_the_town_hall.game.ui.graphical.GUIScreen;
-import com.inside_the_town_hall.game.ui.graphical.screen.GameScreen;
+import com.inside_the_town_hall.game.ui.graphical.screen.*;
 
 /**
  * Main Loop and different environments are run in the GameController
@@ -58,13 +55,10 @@ public class GameController {
         // this.scheduler.createTimedTask(() -> this.LOGGER.log(LogMode.GREEN, "Timed"), 100, 3);
         //this.scheduler.createVolatileTask(() -> System.out.println("volatile2"), 10);
         this.clock.start();
-        Board.getInstance().getLayout().add(new BoardItem(new BoardPosition(1, 2), new Wizard(), BoardItemType.MOVABLE));
-        BoardItem item = Board.getInstance().getLayout().getItem(1, 2);
-        item.action().pathfindTo(new BoardPosition(2, 5));
-        item.action().abort();
+        startGame();
         GUIManager.create(1200, 800, LanguageManager.getInstance().use("UI.SCREEN.GAME.TITLE")).init();
         GUIManager.getInstance().setCurrentScreen(this.gameScreen);
-        GUIManager.getInstance().run();
+        GUIManager.getInstance().run(); /* blocks Thread */
     }
 
     /**
@@ -80,9 +74,18 @@ public class GameController {
      */
     public void prod() {
         this.clock.start();
+        startGame();
         GUIManager.create(1200, 800, LanguageManager.getInstance().use("UI.SCREEN.GAME.TITLE")).init();
         GUIManager.getInstance().setCurrentScreen(this.gameScreen);
         GUIManager.getInstance().run();
+    }
+
+    private void startGame() {
+        // TODO: Remove Dev stuff below
+        BoardItem item = new BoardItem(new BoardPosition(1, 2), new Wizard(), BoardItemType.MOVABLE);
+        Board.getInstance().getLayout().add(item);
+        item.action().pathfindTo(new BoardPosition(2, 5));
+        // item.action().abort();
     }
 
     /**

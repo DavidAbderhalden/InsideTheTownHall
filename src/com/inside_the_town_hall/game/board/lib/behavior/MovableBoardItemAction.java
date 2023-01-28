@@ -7,6 +7,7 @@ import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
 import com.inside_the_town_hall.game.controlls.GameController;
 import com.inside_the_town_hall.game.log.LogHandler;
 import com.inside_the_town_hall.game.log.LogMode;
+import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -56,7 +57,8 @@ public class MovableBoardItemAction implements IBoardItemAction{
             return;
         }
         BoardPosition nextPosition = path.get(this.boardPosition);
-         Board.getInstance().getItem(this.boardItemId).moveTo(nextPosition);
+        Board.getInstance().getItem(this.boardItemId).moveTo(nextPosition);
+        // GUIManager.getInstance().getCurrentScreen().update();
     }
 
     @Override

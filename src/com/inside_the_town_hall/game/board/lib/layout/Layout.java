@@ -5,6 +5,7 @@ import com.inside_the_town_hall.game.board.lib.behavior.BoardItemType;
 import com.inside_the_town_hall.game.board.lib.behavior.DefaultPathfinding;
 import com.inside_the_town_hall.game.board.lib.boardItem.BoardItem;
 import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
+import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 
 import java.util.HashMap;
 import java.util.LinkedList;
