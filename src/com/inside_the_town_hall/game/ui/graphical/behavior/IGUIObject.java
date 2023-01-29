@@ -1,4 +1,4 @@
-package com.inside_the_town_hall.game.ui.graphical.blueprint;
+package com.inside_the_town_hall.game.ui.graphical.behavior;
 
 /**
  * The GUI Object interface used by all objects inside the GUI

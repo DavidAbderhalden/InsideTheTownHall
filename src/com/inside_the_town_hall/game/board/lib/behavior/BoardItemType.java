@@ -1,6 +1,7 @@
 package com.inside_the_town_hall.game.board.lib.behavior;
 
 import com.inside_the_town_hall.game.board.entities.Entity;
+import com.inside_the_town_hall.game.board.lib.behavior.pathfinding.DefaultPathfinding;
 import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
 
 import java.util.UUID;

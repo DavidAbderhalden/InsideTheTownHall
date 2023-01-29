@@ -173,6 +173,7 @@ public class GUIManager implements Runnable {
 //            System.out.println(glGetError());
             }
         } catch (Exception e) {
+            e.printStackTrace();
             GameController.getInstance().shutdown();
         } finally {
             glfwFreeCallbacks(this.window);

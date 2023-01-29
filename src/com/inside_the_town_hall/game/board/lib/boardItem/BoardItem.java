@@ -3,14 +3,9 @@ package com.inside_the_town_hall.game.board.lib.boardItem;
 import com.inside_the_town_hall.game.board.entities.Entity;
 import com.inside_the_town_hall.game.board.lib.behavior.BoardItemType;
 import com.inside_the_town_hall.game.board.lib.behavior.IBoardItemAction;
-import com.inside_the_town_hall.game.board.lib.behavior.IPathfindingBehavior;
 import com.inside_the_town_hall.game.board.lib.board.Board;
 import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
-import com.inside_the_town_hall.game.controlls.GameController;
-import com.inside_the_town_hall.game.log.LogHandler;
-import com.inside_the_town_hall.game.log.LogMode;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.UUID;
@@ -25,12 +20,14 @@ public class BoardItem {
     private final BoardPosition boardPosition;
     private final IBoardItemAction boardItemAction;
     private final Entity item;
+    private final boolean passable;
 
-    public BoardItem(BoardPosition initPos, Entity item, BoardItemType boardItemType) {
+    public BoardItem(BoardPosition initPos, Entity item, BoardItemType boardItemType, boolean passable) {
         this.id = UUID.randomUUID();
         this.boardPosition = initPos;
         this.item = item;
         this.boardItemAction = boardItemType.getBoardItemAction(this.id, this.item, this.boardPosition);
+        this.passable = passable;
     }
 
     // TODO: Not every BoardItem can move etc.
@@ -158,7 +155,7 @@ public class BoardItem {
         return item;
     }
 
-    public UUID getId() {
+    public UUID getUUIDId() {
         return id;
     }
 
@@ -170,18 +167,21 @@ public class BoardItem {
         return this.boardItemAction;
     }
 
+    public boolean isPassable() {
+        return passable;
+    }
+
     // Overriding
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         BoardItem boardItem = (BoardItem) obj;
-        return this.id == boardItem.getId();
+        return this.id == boardItem.getUUIDId();
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(boardPosition, item);
     }
-
 }

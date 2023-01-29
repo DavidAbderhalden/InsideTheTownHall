@@ -1,7 +1,7 @@
 package com.inside_the_town_hall.game.ui.graphical.object.lib;
 
 import com.inside_the_town_hall.game.ui.graphical.GUIManager;
-import com.inside_the_town_hall.game.ui.graphical.blueprint.IGUIObject;
+import com.inside_the_town_hall.game.ui.graphical.behavior.IGUIObject;
 
 public abstract class GUIObject implements IGUIObject {
     public static final int DEFAULT_WIDTH = 200;

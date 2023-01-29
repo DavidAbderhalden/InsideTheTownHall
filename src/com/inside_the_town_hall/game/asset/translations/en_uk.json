@@ -4,5 +4,6 @@
   "ERROR.IO.FILE.INPUT": "An error occurred while trying to read a file",
   "ERROR.UI.IMAGE.FAVICON": "The program icon couldn't be loaded",
   "UI.SCREEN.GAME.TITLE": "Inside The Town Hall",
-  "SCHEDULER.TASK.ACTION.CANCEL": "The task action request ${ACTION_ID} was ignored"
+  "SCHEDULER.TASK.ACTION.CANCEL": "The task action request ${ACTION_ID} was ignored",
+  "GAME.ACTION.SHUTDOWN": "The game has been shut down"
 }

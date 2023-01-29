@@ -1,12 +1,10 @@
 package com.inside_the_town_hall.game.ui.graphical;
 
-import com.inside_the_town_hall.game.ui.graphical.blueprint.IGUIObject;
+import com.inside_the_town_hall.game.ui.graphical.behavior.IGUIObject;
 import com.inside_the_town_hall.game.ui.graphical.object.lib.GUIObject;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 /**
  * Super class to build different GUI Screens
@@ -17,6 +15,7 @@ public abstract class GUIScreen implements IGUIObject {
 
     protected final ArrayList<GUIObject> objects;
     private final GUIObject nullObj;
+    private GUIObject lastActive;
     private GUIObject active;
 
     public GUIScreen() {
@@ -27,6 +26,7 @@ public abstract class GUIScreen implements IGUIObject {
             }
         };
         this.active = this.nullObj;
+        this.lastActive = this.active;
     }
 
     /**
@@ -38,8 +38,9 @@ public abstract class GUIScreen implements IGUIObject {
     }
 
     /**
-     * Draws every object and checks if it is active
-     * @param flags unused
+     * Draws every object
+     *
+     * @param flags if object is active
      */
     @Override
     public void draw(boolean[] flags) {
@@ -66,7 +67,8 @@ public abstract class GUIScreen implements IGUIObject {
 
     /**
      * Delegates the key press to the active object
-     * @param keycode the key that was pressed
+     *
+     * @param keycode  the key that was pressed
      * @param scancode
      * @param mods
      */
@@ -76,7 +78,6 @@ public abstract class GUIScreen implements IGUIObject {
     }
 
     /**
-     *
      * @param codepoint
      */
     @Override
@@ -102,11 +103,13 @@ public abstract class GUIScreen implements IGUIObject {
     /**
      * Sets the new, hovered object to active. Delegates on mouse down
      * to object, providing the params
+     *
      * @param button mouse button which has been pressed
      * @param mods
      */
     @Override
     public void onMouseDown(int button, int mods) {
+        updateLastActive();
         this.setActive(null);
         objects.stream().filter(GUIObject::isHovered).forEach(obj -> {
             obj.onMouseDown(button, mods);
@@ -129,8 +132,16 @@ public abstract class GUIScreen implements IGUIObject {
         this.active = active;
     }
 
+    public void updateLastActive() {
+        this.lastActive = active;
+    }
+
     // Getter
     public GUIObject getActive() {
         return Objects.requireNonNullElse(this.active, this.nullObj);
+    }
+
+    public GUIObject getLastActive() {
+        return Objects.requireNonNullElse(this.lastActive, this.nullObj);
     }
 }

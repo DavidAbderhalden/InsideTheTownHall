@@ -1,4 +1,4 @@
-package com.inside_the_town_hall.game.board.lib.behavior;
+package com.inside_the_town_hall.game.board.lib.behavior.pathfinding;
 
 import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
 

@@ -82,16 +82,18 @@ public class GameController {
 
     private void startGame() {
         // TODO: Remove Dev stuff below
-        BoardItem item = new BoardItem(new BoardPosition(1, 2), new Wizard(), BoardItemType.MOVABLE);
-        Board.getInstance().getLayout().add(item);
-        item.action().pathfindTo(new BoardPosition(2, 5));
-        // item.action().abort();
+        BoardItem wizard1 = new BoardItem(new BoardPosition(15, 30), new Wizard(), BoardItemType.MOVABLE, true);
+        Board.getInstance().getLayout().add(wizard1);
+        BoardItem wizard2 = new BoardItem(new BoardPosition(16, 30), new Wizard(), BoardItemType.MOVABLE, true);
+        Board.getInstance().getLayout().add(wizard2);
+        // item.action().pathfindTo(new BoardPosition(2, 5));
     }
 
     /**
      * Shuts down the main loop
      */
     public void shutdown() {
+        LOGGER.deepLog(LogMode.YELLOW, "GAME.ACTION.SHUTDOWN");
         GUIManager.getInstance().stop();
         this.clock.shutdown();
     }

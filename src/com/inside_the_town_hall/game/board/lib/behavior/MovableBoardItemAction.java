@@ -1,13 +1,12 @@
 package com.inside_the_town_hall.game.board.lib.behavior;
 
 import com.inside_the_town_hall.game.board.entities.Entity;
+import com.inside_the_town_hall.game.board.lib.behavior.pathfinding.IPathfindingBehavior;
 import com.inside_the_town_hall.game.board.lib.board.Board;
-import com.inside_the_town_hall.game.board.lib.boardItem.BoardItem;
 import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
 import com.inside_the_town_hall.game.controlls.GameController;
 import com.inside_the_town_hall.game.log.LogHandler;
 import com.inside_the_town_hall.game.log.LogMode;
-import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -63,8 +62,10 @@ public class MovableBoardItemAction implements IBoardItemAction{
 
     @Override
     public void pathfindTo(BoardPosition targetPos) {
+        abort();
         UUID actionId = UUID.randomUUID();
         HashMap<BoardPosition, BoardPosition> path = this.pathfindingBehavior.pathfind(this.boardPosition, targetPos);
+        if(path == null) return;
         GameController.getInstance().getScheduler().createTimedTask(
                 () -> moveToTask(path, actionId),
                 entity.getSpeed(),
