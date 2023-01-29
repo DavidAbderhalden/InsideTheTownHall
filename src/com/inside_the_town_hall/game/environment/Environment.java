@@ -14,12 +14,6 @@ public enum Environment {
             GameController.getInstance().dev();
         }
     },
-    TEST("test") {
-        @Override
-        public void start() {
-            GameController.getInstance().test();
-        }
-    },
     PROD("prod") {
         @Override
         public void start() {
@@ -34,7 +28,7 @@ public enum Environment {
     }
 
     /**
-     * Returns environment from string "dev", "test", "prod"
+     * Returns environment from string "dev", "prod"
      *
      * @param envString the environment as string, case-insensitive
      * @return the environment or null

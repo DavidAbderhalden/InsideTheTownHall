@@ -8,6 +8,11 @@ import org.lwjgl.glfw.GLFW;
 import java.awt.*;
 import java.util.UUID;
 
+/**
+ * Wizard Entity displayed in the GUI
+ *
+ * @author NekroQuest
+ */
 public class GUIWizard extends GUIObject implements IGUIBoardItem {
     private final UUID itemId;
 
@@ -16,26 +21,19 @@ public class GUIWizard extends GUIObject implements IGUIBoardItem {
         this.itemId = itemId;
     }
 
+    /**
+     * Draws the GUI wizard
+     * @param flags if active
+     */
     @Override
     public void draw(boolean[] flags) {
         boolean isActive = false;
-        if(flags.length > 0) isActive = flags[0];
+        if (flags.length > 0) isActive = flags[0];
         Color color = isActive ? new Color(48, 175, 26) : new Color(71, 135, 239, 255);
         GUIManager.getInstance().drawRect(super.getX(), super.getY(), super.getWidth(), super.getHeight(), color);
     }
 
-    @Override
-    public void update() {
-        //
-    }
-
-    @Override
-    public void onMouseDown(int button, int mods) {
-        if (button == GLFW.GLFW_MOUSE_BUTTON_1) {
-            System.out.printf("LEFT CLICKED ON WIZARD OBJECT %s x = %d, y = %d\n", this.hashCode(), super.getX(), super.getY());
-        }
-    }
-
+    // Getter
     @Override
     public UUID getItemId() {
         return this.itemId;

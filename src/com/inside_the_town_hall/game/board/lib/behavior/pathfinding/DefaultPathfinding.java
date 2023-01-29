@@ -10,11 +10,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Default Pathfinding uses the A* algorithm for pathfinding
+ *
+ * @author NekroQuest
+ */
 public class DefaultPathfinding implements IPathfindingBehavior {
     private Node currentNode;
     private Node startNode;
     private Node destinationNode;
 
+    /**
+     * Pathfind between two positions
+     *
+     * @param start the starting position
+     * @param destination the destination position
+     * @return a HashMap of every move the entity must take to reach the destination
+     */
     @Override
     public HashMap<BoardPosition, BoardPosition> pathfind(BoardPosition start, BoardPosition destination) {
         ArrayList<Node> openList = new ArrayList<>();
@@ -24,15 +36,15 @@ public class DefaultPathfinding implements IPathfindingBehavior {
         this.startNode = nodes[start.getY()][start.getX()];
         this.destinationNode = nodes[destination.getY()][destination.getX()];
 
-        if(!this.startNode.isPassable() || !this.destinationNode.isPassable()) {
+        if (!this.startNode.isPassable() || !this.destinationNode.isPassable()) {
             return null;
         }
         this.currentNode = this.startNode;
 
         int controller = 0;
-        int maxIterations = (Board.getInstance().getLayout().getBoardHeight()*Board.getInstance().getLayout().getBoardWidth())+1;
+        int maxIterations = (Board.getInstance().getLayout().getBoardHeight() * Board.getInstance().getLayout().getBoardWidth()) + 1;
 
-        while (controller<maxIterations) {
+        while (controller < maxIterations) {
             int x = this.currentNode.getPosition().getX();
             int y = this.currentNode.getPosition().getY();
 
@@ -71,21 +83,24 @@ public class DefaultPathfinding implements IPathfindingBehavior {
                 }
             }
             try {
-                this.currentNode = openList.get(bestFieldIndex); // TODO: Can throw error IndexOutOfBoundsException
+                this.currentNode = openList.get(bestFieldIndex);
             } catch (IndexOutOfBoundsException e) {
                 return null;
             }
             if (this.currentNode.equals(this.destinationNode)) {
-                System.out.println("found destination");
                 this.destinationNode = this.currentNode;
                 return backTrack();
             }
             controller++;
         }
-        System.out.println("no path");
         return null;
     }
 
+    /**
+     * Uses result of pathfinding to trace the nodes back and get the path
+     *
+     * @return HashMap of every move the entity must take to reach the destination
+     */
     private HashMap<BoardPosition, BoardPosition> backTrack() {
         HashMap<BoardPosition, BoardPosition> path = new HashMap<>();
         Node current = this.destinationNode;
@@ -103,6 +118,12 @@ public class DefaultPathfinding implements IPathfindingBehavior {
         return path;
     }
 
+    /**
+     * Opens a node (starts to use it in the pathfinding)
+     *
+     * @param node the node to be opened
+     * @param openList the list with all the open nodes
+     */
     private void openNode(Node node, ArrayList<Node> openList) {
         if (!node.isOpen() && !node.isChecked() && node.isPassable()) {
             node.setOpen(true);
@@ -111,6 +132,11 @@ public class DefaultPathfinding implements IPathfindingBehavior {
         }
     }
 
+    /**
+     * Converts all the board items to a more usable datatype and node
+     *
+     * @return the converted items as a 2d node array
+     */
     private Node[][] convertBoardItems() {
         Node[][] convertedBoardItems = new Node[Board.getInstance().getLayout().getBoardHeight()][Board.getInstance().getLayout().getBoardWidth()];
         for (Map.Entry<UUID, BoardItem> entry : Board.getInstance().getLayout().getById().entrySet()) {

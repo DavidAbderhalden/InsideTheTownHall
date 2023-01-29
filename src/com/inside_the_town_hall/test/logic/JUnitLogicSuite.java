@@ -1,4 +1,4 @@
-package com.inside_the_town_hall.game.test.logic;
+package com.inside_the_town_hall.test.logic;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

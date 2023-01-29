@@ -5,14 +5,20 @@ import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Node of a graph
+ * Class is used for the A* algorithm
+ *
+ * @author NekroQuest
+ */
 public class Node implements Cost<Node> {
     private final BoardPosition position;
     private final UUID itemId;
-    private boolean open;
-    private boolean checked;
-    private final boolean passable;
+    private boolean open; // Node is potential path node
+    private boolean checked; // Node has been checked
+    private final boolean passable; // Movable can pass through node
     private Node parent;
-    private final String nodeType;
+    private final String nodeType; // Class name of entity represented by node
 
     public Node(BoardPosition position, UUID itemId, boolean passable, String type) {
         this.position = position;
@@ -24,6 +30,7 @@ public class Node implements Cost<Node> {
         this.nodeType = type;
     }
 
+    // Getter
     public BoardPosition getPosition() {
         return position;
     }
@@ -44,6 +51,40 @@ public class Node implements Cost<Node> {
         return passable;
     }
 
+    public double getCost(Node start, Node dest) {
+        return getFCost(this, start, dest);
+    }
+
+    public Node getParent() {
+        return this.parent;
+    }
+
+    public String getNodeType() {
+        return nodeType;
+    }
+
+    @Override
+    public double getGCost(Node from, Node to) {
+        // Pythagoras
+        int xVertex = Math.abs(from.getPosition().getX() - to.getPosition().getX());
+        int yVertex = Math.abs(from.getPosition().getY() - to.getPosition().getY());
+        return Math.sqrt((xVertex * xVertex) + (yVertex * yVertex));
+    }
+
+    @Override
+    public double getHCost(Node from, Node to) {
+        // Pythagoras
+        int xVertex = Math.abs(from.getPosition().getX() - to.getPosition().getX());
+        int yVertex = Math.abs(from.getPosition().getY() - to.getPosition().getY());
+        return Math.sqrt((xVertex * xVertex) + (yVertex * yVertex));
+    }
+
+    @Override
+    public double getFCost(Node current, Node start, Node dest) {
+        return getGCost(start, current) + getHCost(current, dest);
+    }
+
+    // Setter
     public void setOpen(boolean open) {
         this.open = open;
     }
@@ -62,39 +103,5 @@ public class Node implements Cost<Node> {
         if (o == null || getClass() != o.getClass()) return false;
         Node node = (Node) o;
         return Objects.equals(position, node.position);
-    }
-
-
-    @Override
-    public double getGCost(Node from, Node to) {
-        // Pythagoras
-        int xVertex = Math.abs(from.getPosition().getX() - to.getPosition().getX());
-        int yVertex = Math.abs(from.getPosition().getY() - to.getPosition().getY());
-        return Math.sqrt((xVertex*xVertex) + (yVertex*yVertex));
-    }
-
-    @Override
-    public double getHCost(Node from, Node to) {
-        // Pythagoras
-        int xVertex = Math.abs(from.getPosition().getX() - to.getPosition().getX());
-        int yVertex = Math.abs(from.getPosition().getY() - to.getPosition().getY());
-        return Math.sqrt((xVertex*xVertex) + (yVertex*yVertex));
-    }
-
-    @Override
-    public double getFCost(Node current, Node start, Node dest) {
-        return getGCost(start, current) + getHCost(current, dest);
-    }
-
-    public double getCost(Node start, Node dest) {
-        return getFCost(this, start, dest);
-    }
-
-    public Node getParent() {
-        return this.parent;
-    }
-
-    public String getNodeType() {
-        return nodeType;
     }
 }

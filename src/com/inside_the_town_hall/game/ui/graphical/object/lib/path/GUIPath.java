@@ -10,6 +10,11 @@ import org.lwjgl.glfw.GLFW;
 import java.awt.*;
 import java.util.UUID;
 
+/**
+ * Path Entity displayed in the GUI
+ *
+ * @author NekroQuest
+ */
 public class GUIPath extends GUIObject implements IGUIBoardItem {
     private final UUID itemId;
 
@@ -18,6 +23,10 @@ public class GUIPath extends GUIObject implements IGUIBoardItem {
         this.itemId = itemId;
     }
 
+    /**
+     * Draws the GUI path
+     * @param flags if active
+     */
     @Override
     public void draw(boolean[] flags) {
         boolean isActive = false;
@@ -26,6 +35,11 @@ public class GUIPath extends GUIObject implements IGUIBoardItem {
         GUIManager.getInstance().drawRect(super.getX(), super.getY(), super.getWidth(), super.getHeight(), color);
     }
 
+    /**
+     * Pathfinds to path entity if right click
+     * @param button the mouse button clicked
+     * @param mods
+     */
     @Override
     public void onMouseDown(int button, int mods) {
         if (button == GLFW.GLFW_MOUSE_BUTTON_2) {
@@ -38,6 +52,7 @@ public class GUIPath extends GUIObject implements IGUIBoardItem {
         }
     }
 
+    // Getter
     @Override
     public UUID getItemId() {
         return this.itemId;

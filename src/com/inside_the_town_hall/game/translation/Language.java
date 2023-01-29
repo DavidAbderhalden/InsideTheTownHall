@@ -1,5 +1,10 @@
 package com.inside_the_town_hall.game.translation;
 
+/**
+ * Different languages
+ *
+ * @author NekroQuest
+ */
 public enum Language {
     EN_UK("en_uk");
 

@@ -1,7 +1,7 @@
-package com.inside_the_town_hall.game.test;
+package com.inside_the_town_hall.test;
 
-import com.inside_the_town_hall.game.test.gui.JUnitGUISuite;
-import com.inside_the_town_hall.game.test.logic.JUnitLogicSuite;
+import com.inside_the_town_hall.test.gui.JUnitGUISuite;
+import com.inside_the_town_hall.test.logic.JUnitLogicSuite;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -12,6 +12,11 @@ import org.junit.runner.notification.Failure;
  * @author NekroQuest
  */
 public class TestRunner {
+
+    public static void main(String[] args) {
+        TestRunner runner = new TestRunner();
+        runner.run();
+    }
 
     /**
      * runs the test suites

@@ -12,7 +12,6 @@ import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 import com.inside_the_town_hall.game.ui.graphical.GUIScreen;
 import com.inside_the_town_hall.game.ui.graphical.behavior.IGUIBoardItem;
 import com.inside_the_town_hall.game.ui.graphical.object.lib.GUIObject;
-import com.inside_the_town_hall.game.ui.graphical.object.lib.door.Direction;
 import com.inside_the_town_hall.game.ui.graphical.object.lib.door.GUIDoor;
 import com.inside_the_town_hall.game.ui.graphical.object.lib.path.GUIPath;
 import com.inside_the_town_hall.game.ui.graphical.object.lib.wall.GUIWall;
@@ -20,14 +19,21 @@ import com.inside_the_town_hall.game.ui.graphical.object.lib.wizard.GUIWizard;
 
 import java.util.LinkedList;
 
+/**
+ * The main screen of the game with board etc.
+ *
+ * @author NekroQuest
+ */
 public class GameScreen extends GUIScreen {
     private int borderX;
     private int borderY;
     private int deltaSize;
 
+    /**
+     * Creates all the BoardItems of the Board Layout in the GUI
+     */
     @Override
     public void init() {
-        // Creates all gui objects
         LinkedList<GUIObject> paths = new LinkedList<>();
         LinkedList<GUIObject> walls = new LinkedList<>();
         LinkedList<GUIObject> wizards = new LinkedList<>();
@@ -55,12 +61,20 @@ public class GameScreen extends GUIScreen {
         addLayers(layers);
     }
 
+    /**
+     * Adds the object in correct order to object list
+     * @param layers sorted list
+     */
     private void addLayers(LinkedList<LinkedList<GUIObject>> layers) {
-        for(LinkedList<GUIObject> layer : layers) {
+        for (LinkedList<GUIObject> layer : layers) {
             super.objects.addAll(layer);
         }
     }
 
+    /**
+     * Draws all the objects of the GUI Screen
+     * @param flags if object is active
+     */
     @Override
     public void draw(boolean[] flags) {
         GUIManager.getInstance().drawBackground();
@@ -70,6 +84,9 @@ public class GameScreen extends GUIScreen {
         }
     }
 
+    /**
+     * Occurs on resizing of the board
+     */
     @Override
     public void update() {
         updateBoardSize();
@@ -77,12 +94,18 @@ public class GameScreen extends GUIScreen {
         updateMovables();
     }
 
+    /**
+     * Updates dimensions of the GUI
+     */
     private void updateBoardSize() {
         this.deltaSize = getDeltaSize();
         this.borderX = getBorderX(this.deltaSize);
         this.borderY = getBorderY(this.deltaSize);
     }
 
+    /**
+     * Updates all positional data of solid items
+     */
     private void updateSolids() {
         super.objects.forEach(obj -> {
             if (obj instanceof IGUIBoardItem) {
@@ -97,6 +120,9 @@ public class GameScreen extends GUIScreen {
         });
     }
 
+    /**
+     * Updates all positional data of movable items
+     */
     private void updateMovables() {
         super.objects.forEach(obj -> {
             if (obj instanceof IGUIBoardItem) {
@@ -111,6 +137,7 @@ public class GameScreen extends GUIScreen {
         });
     }
 
+    // Getter
     private int getPosX(BoardItem item) {
         return item.getPosition().getX() * this.deltaSize + this.borderX;
     }

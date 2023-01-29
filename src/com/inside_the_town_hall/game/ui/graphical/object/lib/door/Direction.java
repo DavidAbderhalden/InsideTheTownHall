@@ -1,13 +1,13 @@
 package com.inside_the_town_hall.game.ui.graphical.object.lib.door;
 
-import com.inside_the_town_hall.game.board.entities.Entity;
-import com.inside_the_town_hall.game.board.lib.behavior.*;
-import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
+import com.inside_the_town_hall.game.board.lib.behavior.BoardItemType;
 import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 
 import java.awt.*;
-import java.util.UUID;
 
+/**
+ * Direction Types used for GUIItems with directions
+ */
 public enum Direction {
     NORTH("north") {
         @Override
@@ -35,7 +35,7 @@ public enum Direction {
             GUIManager.getInstance().drawRect(x, newY, width, newHeight, color1);
         }
     },
-    WEST("west"){
+    WEST("west") {
         @Override
         public void drawDoor(int x, int y, int width, int height, Color color1, Color color2) {
             int newWidth = width / 4;
@@ -51,13 +51,23 @@ public enum Direction {
     }
 
     public static BoardItemType fromString(String boardItemTypeString) {
-        for(BoardItemType type : BoardItemType.values()) {
+        for (BoardItemType type : BoardItemType.values()) {
             if (type.getAsString().equals(boardItemTypeString)) {
                 return type;
             }
-        } return null;
+        }
+        return null;
     }
 
+    /**
+     * Direction for door. Is being overridden
+     * @param x position x
+     * @param y position y
+     * @param width delta width
+     * @param height delta height
+     * @param color1 door color
+     * @param color2 background color
+     */
     public void drawDoor(int x, int y, int width, int height, Color color1, Color color2) {
         GUIManager.getInstance().drawRect(x, y, width, height, color1);
     }

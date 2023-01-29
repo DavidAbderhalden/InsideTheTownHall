@@ -4,6 +4,11 @@ import com.inside_the_town_hall.game.board.entities.levels.Level;
 
 import java.util.HashMap;
 
+/**
+ * Chair Level inheritance specifies level attributes
+ *
+ * @author NekroQuest
+ */
 public class ChairLevel extends Level {
     private static final HashMap<Integer, Integer> HITPOINTS = new HashMap<>() {{
         put(1, 800);
@@ -14,10 +19,7 @@ public class ChairLevel extends Level {
     }};
     private static final int SPEED = 200;
 
-    public ChairLevel(int level, int maxLevel) {
-        super(HITPOINTS, level, maxLevel, SPEED);
+    public ChairLevel(int level) {
+        super(HITPOINTS, level, 5, SPEED);
     }
-//    public int getSpeed() {
-//        return this.speed;
-//    }
 }

@@ -57,7 +57,10 @@ public class GUIManager implements Runnable {
 
     private final PrintStream errorStream;
 
-    // TODO: Create Classes
+    private boolean fullscreen;
+    private int previousWidth;
+    private int previousHeigh;
+
     private final Keyboard keyboard;
     private final Mouse mouse;
     private final Time time;
@@ -70,18 +73,15 @@ public class GUIManager implements Runnable {
 
     private String title;
 
-    // TODO: Create Classes
     private GUIScreen currentScreen;
     private GUIScreen lastScreen;
     private final GUIScreen nullScreen;
 
-    // TODO: Create Classes
     private IFont defaultFont;
     private Shader defaultShader;
     private Shader colorShader;
     private Shader fontShader;
 
-    // TODO: Create Classes
     private ColorModel rect;
     private TextureModel background;
 
@@ -116,6 +116,10 @@ public class GUIManager implements Runnable {
         this.time = new Time();
     }
 
+    /**
+     * Creates the window and initialises
+     * @throws RuntimeException if the initialisation failed
+     */
     public void init() throws RuntimeException {
         GLFWErrorCallback.createPrint(errorStream).set();
         if (!glfwInit()) throw new RuntimeException("glfw.init.failed");
@@ -148,6 +152,9 @@ public class GUIManager implements Runnable {
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     }
 
+    /**
+     * GUI Loop
+     */
     @Override
     public void run() {
         try {
@@ -170,7 +177,6 @@ public class GUIManager implements Runnable {
 
                 glfwSwapBuffers(window);
                 if (glfwWindowShouldClose(window)) GameController.getInstance().shutdown();
-//            System.out.println(glGetError());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -179,10 +185,12 @@ public class GUIManager implements Runnable {
             glfwFreeCallbacks(this.window);
             glfwDestroyWindow(this.window);
             glfwTerminate();
-//            glfwSetErrorCallback(null).free();
         }
     }
 
+    /**
+     * Stop the gui loop
+     */
     public void stop() {
         this.running = false;
     }
@@ -196,6 +204,9 @@ public class GUIManager implements Runnable {
         glfwSetWindowFocusCallback(window, this::onFocus);
     }
 
+    /**
+     * Loads all game ressources
+     */
     private void loadResources() {
         this.defaultShader = new Shader("main", this);
         this.colorShader = new Shader("color", this);
@@ -207,6 +218,9 @@ public class GUIManager implements Runnable {
         this.background = new TextureModel(Texture.getTexture("background_blurred.png"), VertexUtils.getVertices(0, 0, 0, 0), VertexUtils.getVertices(0, 0, 1, 1));
     }
 
+    /**
+     * Sets the window icon
+     */
     private void setWindowIcon() {
         IntBuffer width = BufferUtils.createIntBuffer(1);
         IntBuffer height = BufferUtils.createIntBuffer(1);
@@ -297,19 +311,9 @@ public class GUIManager implements Runnable {
         this.drawRect(0, 0, this.width, this.height, new Color(0, 0, 0, 136));
     }
 
-    public void setCurrentScreen(GUIScreen screen) {
-        this.getCurrentScreen().exit();
-        if (screen != null) {
-            screen.init();
-            screen.update();
-        }
-        this.currentScreen = screen;
-    }
-
-    private boolean fullscreen;
-    private int previousWidth;
-    private int previousHeigh;
-
+    /**
+     * Toggles the full screen
+     */
     public void toggleFullscreen() {
         if (this.isFullscreen()) {
             glfwSetWindowSize(window, previousWidth, previousHeigh);
@@ -335,6 +339,9 @@ public class GUIManager implements Runnable {
         this.update();
     }
 
+    /**
+     * Updates window scales
+     */
     public void updateWindowData() {
         int[] width = new int[1];
         int[] height = new int[1];
@@ -343,6 +350,7 @@ public class GUIManager implements Runnable {
         this.height = height[0];
     }
 
+    // Getter
     public int[] getCenter() {
         return new int[]{this.getWidth() / 2, this.getHeight() / 2};
     }
@@ -403,12 +411,13 @@ public class GUIManager implements Runnable {
         return running;
     }
 
-    public void setLastScreen() {
-        this.lastScreen = this.currentScreen;
-    }
-
     public GUIScreen getLastScreen() {
         return this.lastScreen;
+    }
+
+    // Setter
+    public void setLastScreen() {
+        this.lastScreen = this.currentScreen;
     }
 
     public void updateTitle() {
@@ -416,5 +425,14 @@ public class GUIManager implements Runnable {
                 .use("window.title", new HashMap<>() {{
                     put("version", "0.1");
                 }}));
+    }
+
+    public void setCurrentScreen(GUIScreen screen) {
+        this.getCurrentScreen().exit();
+        if (screen != null) {
+            screen.init();
+            screen.update();
+        }
+        this.currentScreen = screen;
     }
 }

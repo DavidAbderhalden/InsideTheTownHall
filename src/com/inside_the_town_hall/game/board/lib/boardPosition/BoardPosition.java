@@ -32,7 +32,6 @@ public class BoardPosition {
      * @return if the validation was successful
      */
     public boolean setX(int x) {
-        // TODO: More validation (wall or different item...)
         if(x < Board.getInstance().getLayout().getBoardWidth()) {
             this.x = x;
         }
@@ -46,7 +45,6 @@ public class BoardPosition {
      * @return if the validation was successful
      */
     public boolean setY(int y) {
-        // TODO: More validation (wall or different item...)
         if(y < Board.getInstance().getLayout().getBoardHeight()) {
             this.y = y;
         }

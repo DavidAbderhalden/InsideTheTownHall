@@ -12,6 +12,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.UUID;
 
+/**
+ * Movable board item actions
+ *
+ * @author NekroQuest
+ */
 public class MovableBoardItemAction implements IBoardItemAction{
     private final Entity entity;
     private final UUID boardItemId;
@@ -31,22 +36,30 @@ public class MovableBoardItemAction implements IBoardItemAction{
         this.pathfindingBehavior = pathfindingBehavior;
     }
 
+    /**
+     * Cancels an action
+     * @param actionId the id of the action
+     * @return if the action was canceled
+     */
     @Override
     public boolean cancelAction(UUID actionId) {
         return this.abortedActions.contains(actionId);
     }
 
+    /**
+     * Cancels all actions
+     */
     @Override
     public void abort() {
         this.abortedActions.addAll(this.activeActions);
         this.activeActions = new LinkedList<>();
     }
 
-    @Override
-    public IPathfindingBehavior getPathfindingBehavior() {
-        return this.pathfindingBehavior;
-    }
-
+    /**
+     * Moves board item in scheduler
+     * @param path the HashMap with the paths to move
+     * @param actionId the id of the moving action
+     */
     @Override
     public void moveToTask(HashMap<BoardPosition, BoardPosition> path, UUID actionId) {
         if(cancelAction(actionId)) {
@@ -60,6 +73,10 @@ public class MovableBoardItemAction implements IBoardItemAction{
         // GUIManager.getInstance().getCurrentScreen().update();
     }
 
+    /**
+     * Pathfind and move the board item to the destination
+     * @param targetPos position to pathfind to
+     */
     @Override
     public void pathfindTo(BoardPosition targetPos) {
         abort();
@@ -72,5 +89,11 @@ public class MovableBoardItemAction implements IBoardItemAction{
                 path.size()
         );
         this.activeActions.add(actionId);
+    }
+
+    // Getter
+    @Override
+    public IPathfindingBehavior getPathfindingBehavior() {
+        return this.pathfindingBehavior;
     }
 }

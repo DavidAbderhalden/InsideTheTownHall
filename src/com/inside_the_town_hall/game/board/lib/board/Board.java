@@ -5,6 +5,12 @@ import com.inside_the_town_hall.game.board.lib.layout.Layout;
 
 import java.util.UUID;
 
+/**
+ * Game Board
+ * Is a Singleton
+ *
+ * @author NekroQuest
+ */
 public class Board {
     private static Board instance;
     private final Layout boardLayout;
@@ -21,11 +27,11 @@ public class Board {
         this.boardLayout = new Layout(boardHeight, boardWidth);
     }
 
+    // Getter
     public Layout getLayout() {
         return boardLayout;
     }
 
-    // Delegation
     public BoardItem getItem(int x, int y) {
         return this.boardLayout.getItem(x, y);
     }

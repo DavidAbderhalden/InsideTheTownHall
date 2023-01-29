@@ -30,8 +30,6 @@ public class BoardItem {
         this.passable = passable;
     }
 
-    // TODO: Not every BoardItem can move etc.
-
     /**
      * Moves item to different position on board
      * Method is overloaded
@@ -54,50 +52,6 @@ public class BoardItem {
     public boolean moveTo(BoardPosition newPos) {
         return moveTo(newPos.getX(), newPos.getY());
     }
-
-    /**
-     * Creates a scheduler task to move item to the destination position
-     *
-     * @param targetPos the position the item should pathfind to
-     */
-//    public void pathfindTo(BoardPosition targetPos) {
-//        UUID actionId = UUID.randomUUID();
-//        HashMap<BoardPosition, BoardPosition> path = this.pathfindingBehavior.pathfind(this.boardPosition, targetPos);
-//        GameController.getInstance().getScheduler().createTimedTask(
-//                () -> moveToTask(path, actionId),
-//                item.getSpeed(),
-//                path.size()
-//        );
-//        this.activeActions.add(actionId);
-//    }
-
-    /**
-     * SCHEDULER ACTION
-     *
-     *
-     * @param path hashmap of the pathfinding ({pos1, pos2}, {pos2, pos3} ...)
-     * @param actionId id of the task action (used for canceling etc.)
-     */
-//    private void moveToTask(HashMap<BoardPosition, BoardPosition> path, UUID actionId) {
-//        if(cancelAction(actionId)) {
-//            this.LOGGER.deepLog(LogMode.YELLOW, "SCHEDULER.TASK.ACTION.CANCEL", new HashMap<>(){{
-//                put("TASK_ID", actionId.toString());
-//            }});
-//            return;
-//        }
-//        BoardPosition nextPosition = path.get(this.boardPosition);
-//        moveTo(nextPosition);
-//    }
-
-    /**
-     * SCHEDULER ACTION
-     *
-     * @param actionId id of the task action (used for canceling etc.)
-     * @return has the action been canceled
-     */
-//    private boolean cancelAction(UUID actionId) {
-//        return this.abortedActions.contains(actionId);
-//    }
 
     /**
      * Get all the items on the board surrounding this one
@@ -138,14 +92,6 @@ public class BoardItem {
                 + Math.abs(this.boardPosition.getY() - item.boardPosition.getY()) == 1;
     }
 
-    /**
-     * Cancels all ongoing actions
-     */
-//    public void abort() {
-//        this.abortedActions.addAll(this.activeActions);
-//        this.activeActions = new LinkedList<>();
-//    }
-
     // Getter
     public BoardPosition getPosition() {
         return this.boardPosition;
@@ -158,10 +104,6 @@ public class BoardItem {
     public UUID getUUIDId() {
         return id;
     }
-
-//    public IPathfindingBehavior getPathfindingBehavior() {
-//        return this.pathfindingBehavior;
-//    }
 
     public IBoardItemAction action() {
         return this.boardItemAction;

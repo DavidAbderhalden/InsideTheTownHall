@@ -13,6 +13,11 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Layout for the game board
+ *
+ * @author NekroQuest
+ */
 public class Layout {
     private final int boardHeight;
     private final int boardWidth;
@@ -25,6 +30,9 @@ public class Layout {
         this.boardWidth = width;
     }
 
+    /**
+     * Initializes the default game board
+     */
     public void init() {
         // path
         for (int x = 0; x < this.boardWidth; x++) {
@@ -86,23 +94,33 @@ public class Layout {
 
     }
 
-    public BoardItem getItem(int x, int y) {
-        return this.byPosition.get(new BoardPosition(x, y));
-    }
-
-    public BoardItem getItem(UUID itemId) {
-        return this.byId.get(itemId);
-    }
-
+    /**
+     * Adds a BoardItem to the game board
+     * @param item the item to be added
+     * @return if the item was successfully added
+     */
     public boolean add(BoardItem item) {
         this.byPosition.put(item.getPosition(), item);
         this.byId.put(item.getUUIDId(), item);
         return true;
     }
 
+    /**
+     * Removes all BoardItems at position
+     * @param position the position to remove items
+     */
     public void remove(BoardPosition position) {
         this.byPosition.remove(position);
         this.byId.values().removeIf(boardItem -> boardItem.getPosition().equals(position));
+    }
+
+    // Getter
+    public BoardItem getItem(int x, int y) {
+        return this.byPosition.get(new BoardPosition(x, y));
+    }
+
+    public BoardItem getItem(UUID itemId) {
+        return this.byId.get(itemId);
     }
 
     public int getBoardHeight() {

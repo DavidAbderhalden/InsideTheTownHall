@@ -10,7 +10,7 @@ import com.inside_the_town_hall.game.log.LogMode;
 import com.inside_the_town_hall.game.properties.Properties;
 import com.inside_the_town_hall.game.scheduler.Clock;
 import com.inside_the_town_hall.game.scheduler.Scheduler;
-import com.inside_the_town_hall.game.test.TestRunner;
+//import com.inside_the_town_hall.test.TestRunner;
 import com.inside_the_town_hall.game.translation.LanguageManager;
 import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 import com.inside_the_town_hall.game.ui.graphical.GUIScreen;
@@ -62,14 +62,6 @@ public class GameController {
     }
 
     /**
-     * Runs all the JUnit suites
-     */
-    public void test() {
-        TestRunner tests = new TestRunner();
-        tests.run();
-    }
-
-    /**
      * Starts the production game
      */
     public void prod() {
@@ -80,6 +72,9 @@ public class GameController {
         GUIManager.getInstance().run();
     }
 
+    /**
+     * Starts the game logic
+     */
     private void startGame() {
         // TODO: Remove Dev stuff below
         BoardItem wizard1 = new BoardItem(new BoardPosition(15, 30), new Wizard(), BoardItemType.MOVABLE, true);

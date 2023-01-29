@@ -2,6 +2,13 @@ package com.inside_the_town_hall.game.board.entities.levels;
 
 import java.util.HashMap;
 
+/**
+ * Level class for game entities
+ * All game entities have specific levels and
+ * their stats change according to the level
+ *
+ * @author NekroQuest
+ */
 public abstract class Level {
 
     protected final HashMap<Integer, Integer> hitpointsTable;
@@ -16,6 +23,7 @@ public abstract class Level {
         this.speed = speed;
     }
 
+    // Getter
     public int getHitpoints() {
         return this.hitpointsTable.get(this.level);
     }
@@ -32,6 +40,7 @@ public abstract class Level {
         return this.speed;
     }
 
+    // Setter
     public void setLevel(int newLevel) {
         this.level = newLevel;
     }
