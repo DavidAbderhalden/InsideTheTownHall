@@ -1,7 +1,6 @@
 package com.inside_the_town_hall.game.board.lib.behavior.pathfinding.graph;
 
 import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
-import org.lwjgl.system.linux.XVisibilityEvent;
 
 import java.util.Objects;
 import java.util.UUID;
