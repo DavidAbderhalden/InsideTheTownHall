@@ -231,7 +231,7 @@ public class GUIManager implements Runnable {
             // TODO: Make icon path constant (configurable)
             ByteBuffer image = STBImage.stbi_load_from_memory(BufferCreator.createByteBuffer(
                             FileHandler.getInstance().readFileAsBytes(
-                                    "asset\\textures\\%s".formatted(GameController.properties.FAVICON_NAME()))),
+                                    "asset\\textures\\%s".formatted(GameController.getProperties().FAVICON_NAME()))),
                     width, height, comp, 4);
             assert image != null;
             icon.set(width.get(), height.get(), image);

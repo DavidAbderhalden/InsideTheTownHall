@@ -85,8 +85,30 @@ public class MovableBoardItemAction implements IBoardItemAction{
         if(path == null) return;
         GameController.getInstance().getScheduler().createTimedTask(
                 () -> moveToTask(path, actionId),
-                entity.getSpeed(),
+                this.entity.getSpeed(),
                 path.size()
+        );
+        this.activeActions.add(actionId);
+    }
+
+    /**
+     * Moves the entity for one position
+     * @param targetPosition the next position
+     */
+    @Override
+    public void moveTo(BoardPosition targetPosition) {
+        if(!Board.getInstance().getLayout().isPassablePosition(targetPosition)) {
+            return;
+        }
+        abort();
+        UUID actionId = UUID.randomUUID();
+        BoardPosition boardPosition = this.boardPosition;
+        HashMap<BoardPosition, BoardPosition> path = new HashMap<>() {{
+            put(boardPosition, targetPosition);
+        }};
+        GameController.getInstance().getScheduler().createVolatileTask(
+                () -> moveToTask(path, actionId),
+                this.entity.getSpeed()
         );
         this.activeActions.add(actionId);
     }

@@ -10,7 +10,6 @@ import com.inside_the_town_hall.game.log.LogMode;
 import com.inside_the_town_hall.game.properties.Properties;
 import com.inside_the_town_hall.game.scheduler.Clock;
 import com.inside_the_town_hall.game.scheduler.Scheduler;
-//import com.inside_the_town_hall.test.TestRunner;
 import com.inside_the_town_hall.game.translation.LanguageManager;
 import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 import com.inside_the_town_hall.game.ui.graphical.GUIScreen;
@@ -23,7 +22,7 @@ import com.inside_the_town_hall.game.ui.graphical.screen.*;
  * @author NekroQuest
  */
 public class GameController {
-    public static final Properties properties = new Properties();
+    private static final Properties properties = new Properties();
     private final GUIScreen gameScreen;
     private static GameController instance;
     private final Clock clock;
@@ -98,7 +97,7 @@ public class GameController {
         return this.scheduler;
     }
 
-    public Properties getProperties() {
-        return this.properties;
+    public static Properties getProperties() {
+        return properties;
     }
 }

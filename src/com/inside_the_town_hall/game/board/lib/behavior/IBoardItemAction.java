@@ -29,10 +29,13 @@ public interface IBoardItemAction {
 
     /**
      * Used by the Scheduler
-     * @param path the HashMap with the paths to move
+     *
+     * @param path     the HashMap with the paths to move
      * @param actionId the id of the moving action
      */
     void moveToTask(HashMap<BoardPosition, BoardPosition> path, UUID actionId);
+
+    void moveTo(BoardPosition targetPosition);
 
     void pathfindTo(BoardPosition targetPos);
 }

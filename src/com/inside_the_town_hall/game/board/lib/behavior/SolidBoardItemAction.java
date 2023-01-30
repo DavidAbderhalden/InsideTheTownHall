@@ -40,6 +40,10 @@ public class SolidBoardItemAction implements IBoardItemAction {
     public void moveToTask(HashMap<BoardPosition, BoardPosition> path, UUID actionId) {
     }
 
+    @Override
+    public void moveTo(BoardPosition targetPosition) {
+    }
+
     /**
      * Pathfind and move the board item to the destination
      * @param targetPos position to pathfind to

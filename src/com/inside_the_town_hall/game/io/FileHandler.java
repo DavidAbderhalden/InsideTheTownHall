@@ -32,7 +32,7 @@ public class FileHandler {
     public byte[] readFileAsBytes(String path) {
         byte[] bytes = {};
         try {
-            bytes = Files.readAllBytes(Paths.get(GameController.properties.CONTENT_ROOT() + path));
+            bytes = Files.readAllBytes(Paths.get(GameController.getProperties().CONTENT_ROOT() + path));
         } catch (IOException e) {
             // TODO: Handle exception
         }
@@ -58,7 +58,7 @@ public class FileHandler {
         StringBuilder fileContent = new StringBuilder();
         try {
             bufferedInputStream = new BufferedInputStream(
-                    new FileInputStream(GameController.properties.CONTENT_ROOT() + path)
+                    new FileInputStream(GameController.getProperties().CONTENT_ROOT() + path)
             );
             while (bufferedInputStream.available() > 0) {
                 fileContent.append((char) bufferedInputStream.read());

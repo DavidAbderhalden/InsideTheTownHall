@@ -142,4 +142,8 @@ public class Layout {
     public HashMap<UUID, BoardItem> getById() {
         return this.byId;
     }
+
+    public boolean isPassablePosition(BoardPosition position) {
+        return this.byPosition.get(position).isPassable();
+    }
 }

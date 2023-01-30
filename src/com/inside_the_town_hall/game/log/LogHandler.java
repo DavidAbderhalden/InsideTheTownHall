@@ -17,7 +17,7 @@ public class LogHandler {
     private static LogHandler instance;
 
     public LogHandler(Class clazz) {
-        PropertyConfigurator.configure(GameController.properties.CONTENT_ROOT() + "/properties/log4j.properties");
+        PropertyConfigurator.configure(GameController.getProperties().CONTENT_ROOT() + "/properties/log4j.properties");
         this.logger = Logger.getLogger(clazz);
     }
 

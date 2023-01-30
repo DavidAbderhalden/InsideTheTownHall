@@ -18,6 +18,6 @@ public class WizardLevel extends Level {
     }};
 
     public WizardLevel(int level) {
-        super(HITPOINTS, level, 4, 20);
+        super(HITPOINTS, level, 4, 10);
     }
 }
