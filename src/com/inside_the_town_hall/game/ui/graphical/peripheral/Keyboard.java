@@ -2,7 +2,6 @@ package com.inside_the_town_hall.game.ui.graphical.peripheral;
 
 import com.inside_the_town_hall.game.ui.graphical.GUIManager;
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWCharCallbackI;
 import org.lwjgl.glfw.GLFWKeyCallbackI;
 
 public class Keyboard implements GLFWKeyCallbackI {
@@ -28,7 +27,7 @@ public class Keyboard implements GLFWKeyCallbackI {
     }
 
     public void invoke(long l, int i) {
-        this.guiManager.getCurrentScreen().onChar((char)i);
+        this.guiManager.getCurrentScreen().onChar((char) i);
     }
 
     public boolean isKeyDown(int key) {

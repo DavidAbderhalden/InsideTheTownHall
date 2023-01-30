@@ -1,6 +1,7 @@
 package com.inside_the_town_hall.game.board.lib.behavior.pathfinding.graph;
 
 import com.inside_the_town_hall.game.board.lib.boardPosition.BoardPosition;
+import org.lwjgl.system.linux.XVisibilityEvent;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -65,18 +66,18 @@ public class Node implements Cost<Node> {
 
     @Override
     public double getGCost(Node from, Node to) {
-        // Pythagoras
         int xVertex = Math.abs(from.getPosition().getX() - to.getPosition().getX());
         int yVertex = Math.abs(from.getPosition().getY() - to.getPosition().getY());
-        return Math.sqrt((xVertex * xVertex) + (yVertex * yVertex));
+        return xVertex + yVertex;
     }
 
     @Override
     public double getHCost(Node from, Node to) {
-        // Pythagoras
         int xVertex = Math.abs(from.getPosition().getX() - to.getPosition().getX());
         int yVertex = Math.abs(from.getPosition().getY() - to.getPosition().getY());
-        return Math.sqrt((xVertex * xVertex) + (yVertex * yVertex));
+        int doorBonus = this.nodeType.equals("Door") ? 5 : 0; // They like to walk through doors :)
+        // return xVertex + yVertex;
+        return xVertex + yVertex - doorBonus;
     }
 
     @Override

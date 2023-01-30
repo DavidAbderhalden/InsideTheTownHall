@@ -49,7 +49,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  * @version 0.1
  */
 public class GUIManager implements Runnable {
-    private static GUIManager instance;
+        private static GUIManager instance;
     private final LogHandler LOGGER = new LogHandler(GUIManager.class);
 
     private long window;

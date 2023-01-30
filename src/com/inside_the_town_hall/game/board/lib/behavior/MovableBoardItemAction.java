@@ -70,7 +70,6 @@ public class MovableBoardItemAction implements IBoardItemAction{
         }
         BoardPosition nextPosition = path.get(this.boardPosition);
         Board.getInstance().getItem(this.boardItemId).moveTo(nextPosition);
-        // GUIManager.getInstance().getCurrentScreen().update();
     }
 
     /**

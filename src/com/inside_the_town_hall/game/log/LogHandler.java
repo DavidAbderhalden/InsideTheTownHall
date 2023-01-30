@@ -14,7 +14,6 @@ import java.util.HashMap;
  */
 public class LogHandler {
     private final Logger logger;
-    private static LogHandler instance;
 
     public LogHandler(Class clazz) {
         PropertyConfigurator.configure(GameController.getProperties().CONTENT_ROOT() + "/properties/log4j.properties");
